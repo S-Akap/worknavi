@@ -1,0 +1,62 @@
+{% extends 'service/base.html' %}
+{% block content %}
+<h1 style='text-align: center;'>スタッフ検索</h1>
+<div style="text-align: center;">
+    <a href="{% url 'service:index' %}">TOPページに戻る</a>
+</div>
+
+
+<!-- 検索内容の入力 -->
+<form action="{% url 'service:api' %}" method="POST">{% csrf_token %}
+    <!-- 検索項目のループ start -->
+    {% for item_key, item_value in item_dict.items %}
+    <!-- label設定 -->
+    <label for="{{item_key}}">{{item_value.called}}:</label>
+
+    <!-- 検索項目が「選択」の場合 start -->
+    {% if item_value.type|stringformat:"s" == "select" %}
+    <select name="{{item_key}}" id="{{item_key}}" required>
+        <!-- 選択内容のループ start -->
+        {% for v_key, v_value in item_value.items %}
+        {% if v_key|stringformat:"s" != "called" and v_key|stringformat:"s" != "type" %}
+        <option value="{{v_key}}">{{v_value}}</option>
+        {% endif %}
+        {% endfor %}
+        <!-- 選択内容のループ end -->
+    </select>
+    <!-- 検索項目が「数字入力」の場合 start -->
+    {% elif item_value.type|stringformat:"s" == "number" %}
+    <input type="number" name="{{item_key}}" id="{{item_key}}" />以下 (条件無しの場合、入力不要)
+    <!-- 検索項目が「文字入力」の場合 start -->
+    {% elif item_value.type|stringformat:"s" == "text" %}
+    <input type="text" name="{{item_key}}" id="{{item_key}}" /> (条件無しの場合、入力不要)
+    {% endif %}
+    <!-- 検索項目の条件分岐 end -->
+
+    <hr>
+    {% endfor %}
+    <!-- 検索項目のループ end -->
+
+    <button type="submit">検索</button>
+</form>
+<!-- 検索内容の入力 -->
+
+<h3>検索結果</h3>
+
+<script>
+
+    console.log()
+
+    fetch("{% url 'service:api' %}")
+        .then(response => response.json())
+        .then(data => console.log(data));
+
+</script>
+
+<!-- 検索結果がある時 start -->
+{% if result_data %}
+
+{% endif %}
+
+
+{% endblock %}
