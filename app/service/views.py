@@ -29,35 +29,15 @@ def search_stuff(request):
     item_dict = {'sex': sex_dict, 'age': age_dict, 'requirement': requirement_dict,
                  'hourly_pay': hourly_pay_dict, 'citizenship': citizenship_dict, 'residence': residence_dict}
 
-    print('request.GET : {}'.format(request.GET))
-
     if request.GET != {}:
         result_data = RegisteredStaff.objects.filter(is_contact=True)
         result_data = search_stuff_func(
-            request=request, result_data=result_data)
+            request=request, result_data=result_data
+        )
 
     send_data = {'result_data': result_data, 'item_dict': item_dict}
 
     return render(request, 'service/search_stuff.html', send_data)
-
-
-# def search_stuff(request):
-#     '''登録スタッフ検索ページ'''
-#     sex_dict = {'called': '性別', 'type': 'select',
-#                 'both': 'どちらでも可', 'man': '男性', 'woman': '女性', }
-#     age_dict = {'called': '年齢', 'type': 'number', }
-#     requirement_dict = {'called': '資格',
-#                         'type': 'select', 'noneed': '必要なし', 'need': '必要'}
-#     hourly_pay_dict = {'called': '希望時給', 'type': 'number', }
-#     citizenship_dict = {'called': '国籍', 'type': 'select',
-#                         'both': '外国人でも可', 'japan': '日本人のみ', }
-#     residence_dict = {'called': '居住地', 'type': 'text', }
-#     item_dict = {'sex': sex_dict, 'age': age_dict, 'requirement': requirement_dict,
-#                  'hourly_pay': hourly_pay_dict, 'citizenship': citizenship_dict, 'residence': residence_dict}
-
-#     send_data = {'item_dict': item_dict}
-
-#     return render(request, 'service/search_stuff.html', send_data)
 
 
 def search_stuff_func(request, result_data):
@@ -84,18 +64,17 @@ def search_stuff_func(request, result_data):
     return result_data
 
 
-def randomname(n):
-    randlst = [random.choice(string.ascii_letters)
-               for i in range(n)]
-    return ''.join(randlst)
-
-
+# POST /api/search
+# data = { 'sex':str, 'age':int, 'requirement':str, 'hourly_pay':int, 'citizenship':str, 'residence':str }
 def exchange_search_stuff_data(request):
-    print('request.POST : {}'.format(request.POST))
-    print('request.GET : {}'.format(request.GET))
-    test_data = {'TEST': randomname(4)}
+    data = request.POST
+    print(data)
 
-    return JsonResponse(request.GET)
+    # return JsonResponse(request.GET)
+
+    #  データ加工
+    lucky_num = random.randint(0, 100)
+    return JsonResponse({"lucky_num": lucky_num})
 
 
 def search_company(request):

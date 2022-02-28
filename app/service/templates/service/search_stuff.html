@@ -7,7 +7,7 @@
 
 
 <!-- 検索内容の入力 -->
-<form action="{% url 'service:search_stuff' %}" method="GET">
+<form id="search">
     <!-- 検索項目のループ start -->
     {% for item_key, item_value in item_dict.items %}
     <!-- label設定 -->
@@ -39,44 +39,51 @@
 
     <button type="submit">検索</button>
 </form>
+
+<section>
+    <h2>検索結果</h2>
+    <div id="result" style="display: flex"></div>
+</section>
 <!-- 検索内容の入力 -->
 
-<h3>検索結果</h3>
+<script>
+    const searchElm = document.getElementById('search');
+    const resultElm = document.getElementById('result');
 
-<!-- 検索結果がある時 start -->
-{% if result_data %}
-<p>検索条件に{{result_data.count}}件が該当します。</p>
-<div>
-    <!-- 検索項目のループ start -->
-    {% for item_key, item_value in item_dict.items %}
-    <!--  検索結果のループ start -->
-    {% for request_key, request_value in request.GET.items %}
+    searchElm.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-    <!--   検索項目keyと検索結果keyが一致した時 start -->
-    {% if item_key == request_key %}
-    <li>
-        {{item_value.called}} :
+        const formData = new FormData(searchElm);
+        // https://zenn.dev/hathle/articles/django-fetch
+        const getCookie = (name) => {
+            if (document.cookie && document.cookie !== '') {
+                for (const cookie of document.cookie.split(';')) {
+                    const [key, value] = cookie.trim().split('=')
+                    if (key === name) {
+                        return decodeURIComponent(value)
+                    }
+                }
+            }
+        }
+        const csrftoken = getCookie('csrftoken')
 
-        {% if item_value.type == 'select' %}
-        <!--    検索項目valueのループ start -->
-        {% for iv_key, iv_value in item_value.items %}
-        <!--     検索項目valueのkeyと検索結果valueが一致した時 start -->
-        {% if iv_key == request_value %}
-        {{iv_value}}
-        {% endif %}
-        {% endfor %}
-        {% elif item_value.type == 'number' %}
-        {{request_value}} 以下
-        {% elif item_value.type == 'text' %}
-        {{request_value}}
-        {% endif %}
-    </li>
-    {% endif %}
-    {% endfor %}
-    {% endfor %}
-</div>
-
-{% endif %}
+        const execSearch = async () => {
+            const data = await fetch("/api/search/", {
+                method: "POST",
+                body: formData,
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                }
+            })
+            const result = await data.json();
+            // DOM操作
+            const child = document.createElement('div');
+            child.innerHTML = result.lucky_num;
+            resultElm.appendChild(child)
+        }
+        execSearch();
+    });
+</script>
 
 
 {% endblock %}
