@@ -13,44 +13,51 @@ def index(request):
 
 def search_staff(request):
     '''登録スタッフ検索ページ'''
-    sex_dict = {
-        'called': '性別',
-        'type': 'select',
-        'both': 'どちらでも可',
-        'man': '男性',
-        'woman': '女性',
-    }
-    age_dict = {
-        'called': '年齢',
-        'type': 'number',
-    }
-    requirement_dict = {
-        'called': '資格',
-        'type': 'select',
-        'noneed': '必要なし',
-        'need': '必要'
-    }
-    hourly_pay_dict = {
-        'called': '希望時給',
-        'type': 'number',
-    }
-    citizenship_dict = {
-        'called': '国籍',
-        'type': 'select',
-        'both': '外国人でも可',
-        'japan': '日本人のみ',
-    }
-    residence_dict = {
-        'called': '居住地',
-        'type': 'text',
-    }
+
     item_dict = {
-        'sex': sex_dict,
-        'age': age_dict,
-        'requirement': requirement_dict,
-        'hourly_pay': hourly_pay_dict,
-        'citizenship': citizenship_dict,
-        'residence': residence_dict
+        'sex': {
+            'called': '性別',
+            'type': 'select',
+            'contents': {
+                'both': 'どちらでも可',
+                'man': '男性',
+                'woman': '女性',
+            },
+        },
+        'age': {
+            'called': '年齢',
+            'type': 'number',
+            'contents': {
+            },
+        },
+        'requirement': {
+            'called': '資格',
+            'type': 'select',
+            'contents': {
+                'noneed': '必要なし',
+                'need': '必要'
+            },
+        },
+        'hourly_pay': {
+            'called': '希望時給',
+            'type': 'number',
+            'contents': {
+            },
+        },
+        'citizenship': {
+            'called': '国籍',
+            'type': 'select',
+            'contents': {
+                'both': '外国人でも可',
+                'japan': '日本人のみ',
+            },
+        },
+        'residence': {
+            'called': '居住地',
+            'type': 'text',
+            'contents': {
+            },
+        },
     }
 
     send_data = {
