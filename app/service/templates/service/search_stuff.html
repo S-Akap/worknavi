@@ -42,13 +42,18 @@
 
 <section>
     <h2>検索結果</h2>
-    <div id="result" style="display: flex"></div>
+    <div id="result">
+    </div>
 </section>
 <!-- 検索内容の入力 -->
 
 <script>
     const searchElm = document.getElementById('search');
     const resultElm = document.getElementById('result');
+    {% autoescape off %}
+    const item_dict = {{ item_dict }};
+    {% endautoescape %}
+
 
     searchElm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -68,7 +73,7 @@
         const csrftoken = getCookie('csrftoken')
 
         const execSearch = async () => {
-            const data = await fetch("/api/search/", {
+            const data = await fetch("/search_stuff/result", {
                 method: "POST",
                 body: formData,
                 headers: {
@@ -78,7 +83,42 @@
             const result = await data.json();
             // DOM操作
             const child = document.createElement('div');
-            child.innerHTML = result.lucky_num;
+            // child.innerHTML = result.data;
+            var add_child = '';
+
+            // 検索内容を表示
+            for (var key in result.data) {
+                var key_name = '';
+                var value_name = '';
+
+                console.log(result.data[key])
+                console.log(typeof (result.data[key]))
+
+                // 対応する日本語に変更する
+                for (var item_key in item_dict) {
+                    if (key == item_key) {
+                        // キーを日本語に変換
+                        key_name = item_dict[key]['called']
+
+                        // 選択内容に応じて日本語に変換
+                        if (item_dict[key]['type'] == 'select') {
+                            value_name = item_dict[key][result.data[key]]
+                        } else if (item_dict[key]['type'] == 'number') {
+                            value_name = result.data[key]
+                        } else if (item_dict[key]['type'] == 'text') {
+                            value_name = result.data[key]
+                        } else {
+
+                        }
+
+
+                    } else {
+                        continue;
+                    }
+                }
+                add_child += '( ' + key_name + ' : ' + value_name + ' ) ';
+            }
+            child.innerHTML = '検索結果 : ' + result.number + '人 / 検索条件 : ' + add_child;
             resultElm.appendChild(child)
         }
         execSearch();
