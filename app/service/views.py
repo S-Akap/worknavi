@@ -1,6 +1,3 @@
-from re import A
-import string
-import random
 from django.shortcuts import render
 
 # Create your views here.
@@ -14,7 +11,7 @@ def index(request):
     return render(request, 'service/index.html')
 
 
-def search_stuff(request):
+def search_staff(request):
     '''登録スタッフ検索ページ'''
     sex_dict = {
         'called': '性別',
@@ -60,10 +57,10 @@ def search_stuff(request):
         'item_dict': item_dict
     }
 
-    return render(request, 'service/search_stuff.html', send_data)
+    return render(request, 'service/search_staff.html', send_data)
 
 
-def search_stuff_func(request_data, result_data):
+def search_staff_func(request_data, result_data):
     if request_data['sex'] != 'both':
         result_data = result_data.filter(sex=request_data['sex'])
 
@@ -87,18 +84,15 @@ def search_stuff_func(request_data, result_data):
     return result_data
 
 
-# POST /api/search
 # data = { 'sex':str, 'age':int, 'requirement':str, 'hourly_pay':int, 'citizenship':str, 'residence':str }
-def exchange_search_stuff_data(request):
+
+def exchange_search_staff_data(request):
     data = request.POST
     print(data)
 
-    # return JsonResponse(request.GET)
-
     #  データ加工
-    # number = random.randint(0, 100)
     result_data = RegisteredStaff.objects.filter(is_contact=True)
-    number = search_stuff_func(
+    number = search_staff_func(
         request_data=request.POST, result_data=result_data).count()
     return JsonResponse({"data": data, "number": number})
 

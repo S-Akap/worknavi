@@ -8,9 +8,9 @@ app_name = 'service'
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('search_stuff/', views.search_stuff, name='search_stuff'),
+    path('search_staff/', views.search_staff, name='search_staff'),
     path('search_company/', views.search_company, name='search_company'),
-    path('search_stuff_func/', views.search_stuff_func, name='search_stuff_func'),
-    path('search_stuff/result', views.exchange_search_stuff_data,
-         name='search_stuff/result'),
+    path('search_staff_func/', views.search_staff_func, name='search_staff_func'),
+    path('search_staff/result', views.exchange_search_staff_data,
+         name='search_staff/result'),
 ]

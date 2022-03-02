@@ -73,7 +73,7 @@
         const csrftoken = getCookie('csrftoken')
 
         const execSearch = async () => {
-            const data = await fetch("/search_stuff/result", {
+            const data = await fetch("/search_staff/result", {
                 method: "POST",
                 body: formData,
                 headers: {
