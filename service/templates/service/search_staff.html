@@ -1,0 +1,70 @@
+{% extends 'service/base.html' %}
+{% block content %}
+<h1 style='text-align: center;'>スタッフ検索</h1>
+<div style="text-align: center;">
+    <a href="{% url 'service:index' %}">TOPページに戻る</a>
+</div>
+
+<h2>検索項目</h2>
+
+<form id='search'>
+    {{forms.as_ul}}
+    <button type="submit">検索</button>
+</form>
+
+<h2>検索結果</h2>
+<div id="result">
+</div>
+
+<script>
+    const searchElm = document.getElementById('search');
+    const resultElm = document.getElementById('result');
+
+    searchElm.addEventListener('submit', (e) => {
+        // イベントをキャンセル
+        e.preventDefault();
+
+        // formに入力されたデータの取得
+        const formData = new FormData(searchElm);
+
+        // CSRF に関する処理
+        // 参考URL : https://zenn.dev/hathle/articles/django-fetch
+        const getCookie = (name) => {
+            if (document.cookie && document.cookie !== '') {
+                for (const cookie of document.cookie.split(';')) {
+                    const [key, value] = cookie.trim().split('=')
+                    if (key === name) {
+                        return decodeURIComponent(value)
+                    }
+                }
+            }
+        }
+        const csrftoken = getCookie('csrftoken')
+
+        const execSearch = async () => {
+            // 検索データの送受信
+            const data = await fetch("/search_staff/exchange", {
+                method: "POST",
+                body: formData,
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                }
+            })
+
+            // 受け取ったデータをJSON形式に変換
+            const result = await data.json();
+
+            // DOM操作
+            const child = document.createElement('div');
+            var add_child = '';
+            child.innerHTML = '検索結果 : ' + result.number + '人 / 検索条件 : ' + result.data;
+            resultElm.appendChild(child)
+        }
+        execSearch();
+    });
+</script>
+
+
+
+
+{% endblock %}
