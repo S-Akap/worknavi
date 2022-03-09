@@ -1,0 +1,9 @@
+[
+    {"model": "service.sex", "pk": 1, "fields": {"sex": "man"}},
+    {"model": "service.sex", "pk": 2, "fields": {"sex": "woman"}},
+    {"model": "service.requirement", "pk": 1, "fields": {"requirement": "nothing"}},
+    {"model": "service.citizenship", "pk": 1, "fields": {"citizenship": "japan"}},
+    {"model": "service.registeredstaff", "pk": 1, "fields": {"name": "足立なるみ", "sex": 2, "age": 21, "requirement": 1, "hourly_pay": null, "citizenship": 1, "residence": null, "is_contact": true, "created_datetime": "2022-03-02T10:46:01.753Z", "updated_datetime": "2022-03-02T10:46:01.753Z"}},
+    {"model": "service.registeredstaff", "pk": 2, "fields": {"name": "新井大地", "sex": 1, "age": 32, "requirement": 1, "hourly_pay": 1400, "citizenship": 1, "residence": null, "is_contact": true, "created_datetime": "2022-03-02T10:48:18.485Z", "updated_datetime": "2022-03-02T10:48:18.485Z"}},
+    {"model": "service.registeredstaff", "pk": 3, "fields": {"name": "磯田彩穂李", "sex": 2, "age": 42, "requirement": null, "hourly_pay": null, "citizenship": null, "residence": null, "is_contact": true, "created_datetime": "2022-03-02T10:51:41.241Z", "updated_datetime": "2022-03-02T10:51:41.241Z"}}
+]
