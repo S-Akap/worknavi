@@ -10,7 +10,7 @@ class RegisteredStaffAdmin(admin.ModelAdmin):
                     'hourly_pay', 'citizenship', 'residence', 'is_contact')
 
 
-admin.site.register(Sex)
+# admin.site.register(Sex)
 admin.site.register(Requirement)
 admin.site.register(Citizenship)
 admin.site.register(RegisteredStaff, RegisteredStaffAdmin)

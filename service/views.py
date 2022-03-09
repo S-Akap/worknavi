@@ -21,10 +21,30 @@ def search_company(request):
     return render(request, 'service/search_company.html')
 
 
+# やり取りするデータ
 # data = { 'sex':str, 'age':int, 'requirement':str, 'hourly_pay':int, 'citizenship':str, 'residence':str }
 def exchange_search_staff(request):
+    '''検索内容のやり取り'''
+    get_data = request.POST
+
+    import random
+    number = random.randint(0, 100)
+
+    send_data = {
+        'raw': {
+            'data': get_data,
+            'number': number,
+        },
+        'processed1': {
+            'data': {},
+            'number': 200,
+        },
+    }
+
+    print('get_data : {}'.format(get_data))
+    return JsonResponse(send_data)
+
+
+def search_staff_func(data):
     '''登録スタッフ検索'''
-    data = request.POST
-    number = 200
-    print('data : {}'.format(data))
-    return JsonResponse({"data": data, "number": number})
+    pass

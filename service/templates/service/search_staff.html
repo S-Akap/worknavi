@@ -8,17 +8,26 @@
 <h2>検索項目</h2>
 
 <form id='search'>
-    {{forms.as_ul}}
+    {{forms}}
     <button type="submit">検索</button>
 </form>
 
 <h2>検索結果</h2>
-<div id="result">
-</div>
+<table style="border-collapse: collapse" width="75%" id="result" border="1">
+    <tr>
+        <th>性別</th>
+        <th>年齢</th>
+        <th>資格</th>
+        <th>希望時給</th>
+        <th>国籍</th>
+        <th>居住地</th>
+        <th>人数</th>
+    </tr>
+</table>
+
 
 <script>
     const searchElm = document.getElementById('search');
-    const resultElm = document.getElementById('result');
 
     searchElm.addEventListener('submit', (e) => {
         // イベントをキャンセル
@@ -54,11 +63,51 @@
             // 受け取ったデータをJSON形式に変換
             const result = await data.json();
 
+            // 受け取ったデータを分ける
+            const raw_data = result.raw;
+            const processed1_data = result.processed1;
+
             // DOM操作
-            const child = document.createElement('div');
-            var add_child = '';
-            child.innerHTML = '検索結果 : ' + result.number + '人 / 検索条件 : ' + result.data;
-            resultElm.appendChild(child)
+            // テーブル取得
+            var table = document.getElementById('result');
+            // 行を先頭に追加
+            var row = table.insertRow(1);
+            // セルの挿入
+            var sex_cell = row.insertCell(-1);
+            var age_cell = row.insertCell(-1);
+            var requirement_cell = row.insertCell(-1);
+            var hourly_pay_cell = row.insertCell(-1);
+            var citizenship_cell = row.insertCell(-1);
+            var residence_cell = row.insertCell(-1);
+            var number_cell = row.insertCell(-1);
+
+            // セルの書き換え
+            if (raw_data.data.sex == 'both') {
+                sex_cell.innerHTML = 'どちらでも可'
+            } else if (raw_data.data.sex == 'man') {
+                sex_cell.innerHTML = '男性のみ'
+            } else if (raw_data.data.sex == 'woman') {
+                sex_cell.innerHTML = '女性のみ'
+            } else {
+                sex_cell.innerHTML = 'エラー1'
+            }
+            age_cell.innerHTML = raw_data.data.age
+            if (raw_data.data.requirement == 'nothing') {
+                requirement_cell.innerHTML = '必要なし'
+            } else {
+                sex_cell.innerHTML = 'エラー2'
+            }
+            hourly_pay_cell.innerHTML = "¥ " + raw_data.data.hourly_pay
+            if (raw_data.data.citizenship == 'both') {
+                citizenship_cell.innerHTML = '外国人でも可'
+            } else if (raw_data.data.citizenship == 'japan') {
+                citizenship_cell.innerHTML = '日本人のみ'
+            } else {
+                citizenship_cell.innerHTML = 'エラー3'
+            }
+            residence_cell.innerHTML = raw_data.data.residence
+            number_cell.innerHTML = raw_data.number
+
         }
         execSearch();
     });

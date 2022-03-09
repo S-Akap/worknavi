@@ -11,7 +11,7 @@ class SearchStaffForm(forms.Form):
         ('woman', '女性のみ'),
     )
     REQUIREMENT_CHOICE = (
-        ('nothing', '特に必要なし'),
+        ('nothing', '必要なし'),
     )
     RESIDENCE_CHOICE = (
         ('both', '外国人でも可'),
@@ -23,5 +23,5 @@ class SearchStaffForm(forms.Form):
     age = forms.IntegerField(label='年齢', initial=99)
     requirement = forms.ChoiceField(label='資格', choices=REQUIREMENT_CHOICE)
     hourly_pay = forms.IntegerField(label='希望時給', initial=9999)
-    residence = forms.ChoiceField(label='国籍', choices=RESIDENCE_CHOICE)
-    citizenship = forms.CharField(label='居住地', required=False)
+    citizenship = forms.ChoiceField(label='国籍', choices=RESIDENCE_CHOICE)
+    residence = forms.CharField(label='居住地', required=False)
