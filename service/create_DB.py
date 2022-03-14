@@ -46,7 +46,7 @@ hourly_pay_lis, hourly_pay_lis_w = [
 fake = Factory.create('ja-JP')
 
 
-def do():
+def create_RegisteredStaff():
     name = fake.name()
     sex = random.choices(sex_lis, weights=sex_lis_w, k=1)[0]
     age = random.randint(27, 64)
@@ -63,6 +63,10 @@ def do():
     if random.randint(1, 3) % 2 == 1:
         citizenship = random.choices(
             citizenship_lis, weights=citizenship_lis_w, k=1)[0]
+
+    if random.randint(1, 3) % 2 == 1:
+        requirement = random.choices(
+            requirement_lis, weights=requirement_lis_w, k=1)[0]
 
     if random.randint(1, 3) % 2 == 1:
         is_contact = True

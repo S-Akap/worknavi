@@ -1,4 +1,4 @@
-from .models import RegisteredStaff
+from .models import RegisteredStaff, Sex, Requirement, Citizenship
 
 from django import forms
 
