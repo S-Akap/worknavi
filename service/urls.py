@@ -12,4 +12,6 @@ urlpatterns = [
     path('search_company/', views.search_company, name='search_company'),
     path('search_staff/exchange', views.exchange_search_staff,
          name='search_staff/exchange'),
+    path('search_company/exchange', views.exchange_search_company,
+         name='search_company/exchange')
 ]

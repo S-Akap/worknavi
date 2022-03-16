@@ -5,4 +5,46 @@
     <a href="{% url 'service:index' %}">TOPページに戻る</a>
 </div>
 
+<h2>求人内容</h2>
+
+<form id='search' align="center" method="post">{% csrf_token %}
+    {{forms}}
+    <button type="submit">検索</button>
+</form>
+
+<h2>企業優先順位</h2>
+<table style="border-collapse: collapse" width="90%" id="result" border="1" align="center">
+    <thead>
+        <tr bgcolor="#eeeeee" align="center">
+            <th width="5%">順位</th>
+            <th>会社名</th>
+            <th width="12%">性別</th>
+            <th width="5%">年齢</th>
+            <th width="15%">資格</th>
+            <th width="10%">希望時給</th>
+            <th width="13%">国籍</th>
+            <th width="10%">希望人数</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for i in for_range %}
+        <tr align="center">
+            <td bgcolor="#f0f0f0">{{i}}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+
+
+</table>
+
+
 {% endblock %}

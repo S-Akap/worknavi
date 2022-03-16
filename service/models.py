@@ -21,7 +21,7 @@ class Requirement(models.Model):
 
 
 class Citizenship(models.Model):
-    '''国籍'''
+    '''国籍フィールド'''
     citizenship = models.CharField('国籍', max_length=20, unique=True)
 
     def __str__(self):
@@ -82,27 +82,102 @@ class RegisteredStaffManager(models.Manager):
 
 
 class RegisteredStaff(models.Model):
-    '''派遣スタッフ'''
+    '''派遣スタッフフィールド'''
     name = models.CharField(
-        blank=False, null=False, max_length=30, verbose_name='名前')  # 名前
+        blank=False, null=False, max_length=30, verbose_name='名前'
+    )  # 名前
     sex = models.ForeignKey(
-        Sex, on_delete=models.PROTECT, verbose_name='性別')  # 性別
+        Sex, on_delete=models.PROTECT, verbose_name='性別'
+    )  # 性別
     age = models.IntegerField(
-        blank=False, null=False, verbose_name='年齢')  # 年齢
+        blank=False, null=False, verbose_name='年齢'
+    )  # 年齢
     requirement = models.ForeignKey(
-        Requirement, on_delete=models.PROTECT, blank=True, null=True, verbose_name='資格')  # 資格
+        Requirement, on_delete=models.PROTECT, blank=True, null=True, verbose_name='資格'
+    )  # 資格
     hourly_pay = models.IntegerField(
-        blank=True, null=True, verbose_name='希望時給')  # 希望時給
+        blank=True, null=True, verbose_name='希望時給'
+    )  # 希望時給
     citizenship = models.ForeignKey(
-        Citizenship, on_delete=models.PROTECT, blank=True, null=True, verbose_name='国籍')  # 国籍
+        Citizenship, on_delete=models.PROTECT, blank=True, null=True, verbose_name='国籍'
+    )  # 国籍
     residence = models.CharField(
-        blank=True, null=True, max_length=100, verbose_name='居住地')  # 居住地
+        blank=True, null=True, max_length=100, verbose_name='居住地'
+    )  # 居住地
     is_contact = models.BooleanField(
-        verbose_name='連絡がすぐ繋がるか')  # すぐに連絡が繋がるかどうか
-    created_datetime = models.DateTimeField(auto_now_add=True)  # 作成日
-    updated_datetime = models.DateTimeField(auto_now=True)  # 更新日
+        verbose_name='連絡がすぐ繋がるか'
+    )  # すぐに連絡が繋がるかどうか
+    created_datetime = models.DateTimeField(
+        auto_now_add=True
+    )  # 作成日
+    updated_datetime = models.DateTimeField(
+        auto_now=True
+    )  # 更新日
 
     objects = RegisteredStaffManager()
+
+    def __str__(self):
+        return self.name
+
+
+class Address(models.Model):
+    '''住所フィールド'''
+    zip_code = models.CharField(
+        verbose_name='郵便番号', max_length=8, blank=True,
+    )  # 郵便番号
+    address1 = models.CharField(
+        verbose_name='都道府県', max_length=40, blank=True,
+    )  # 都道府県
+    address2 = models.CharField(
+        verbose_name='市区町村番地', max_length=40, blank=True,
+    )  # 市区町村番地
+    address3 = models.CharField(
+        verbose_name='建物名', max_length=40, blank=True,
+    )  # 建物名
+
+    def __str__(self):
+        return self.address1 + self.address2 + self.address3
+
+
+class Company(models.Model):
+    '''会社フィールド'''
+    name = models.CharField(
+        '会社名', max_length=10, unique=True
+    )  # 会社名
+    address = models.ForeignKey(
+        Address, on_delete=models.PROTECT, verbose_name='会社住所'
+    )  # 会社住所
+
+    def __str__(self):
+        return self.name
+
+
+class RegisteredCompany(models.Model):
+    '''求人希望情報フィールド'''
+    name = models.ForeignKey(
+        Company, on_delete=models.PROTECT, verbose_name='求人会社'
+    )  # 求人会社名
+    sex = models.ForeignKey(
+        Sex, on_delete=models.PROTECT, verbose_name='性別'
+    )  # 性別
+    age = models.IntegerField(
+        blank=False, null=False, verbose_name='年齢'
+    )  # 年齢
+    requirement = models.ForeignKey(
+        Requirement, on_delete=models.PROTECT, blank=True, null=True, verbose_name='資格'
+    )  # 資格
+    hourly_pay = models.IntegerField(
+        blank=True, null=True, verbose_name='希望時給'
+    )  # 希望時給
+    citizenship = models.ForeignKey(
+        Citizenship, on_delete=models.PROTECT, blank=True, null=True, verbose_name='国籍'
+    )  # 国籍
+    created_datetime = models.DateTimeField(
+        auto_now_add=True
+    )  # 作成日
+    updated_datetime = models.DateTimeField(
+        auto_now=True
+    )  # 更新日
 
     def __str__(self):
         return self.name
